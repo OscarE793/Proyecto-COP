@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 
 @NgModule({
-    imports: [
+  imports: [
     CommonModule,
-    FormsModule
-    LoginComponent
-  ]
+    FormsModule,
+    LoginComponent    // ← IMPORTA aquí, NO en declarations
+  ],
+  exports: [LoginComponent]
 })
-export class AuthModule { }
+export class AuthModule {}

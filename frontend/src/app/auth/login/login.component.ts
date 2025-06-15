@@ -1,29 +1,38 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  template: `
-    <form (ngSubmit)="login()">
-      <input type="email" [(ngModel)]="email" name="email" required placeholder="Email" />
-      <input type="password" [(ngModel)]="password" name="password" required placeholder="Contraseña" />
-      <button type="submit">Login</button>
-      <div *ngIf="error" style="color: red;">{{error}}</div>
-    </form>
-  `
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   email = '';
   password = '';
+  remember = false;
   error = '';
+  loading = false;
+  showPassword = false;
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  login() {
+  onSubmit() {
+    this.loading = true;
+    this.error = '';
     this.auth.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
-      error: () => this.error = 'Credenciales inválidas o servidor fuera de línea.'
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.loading = false;
+        this.error = 'El correo o la contraseña es incorrecta';
+      }
     });
   }
 }

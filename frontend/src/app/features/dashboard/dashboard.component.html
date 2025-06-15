@@ -1,0 +1,86 @@
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="logo-cop">
+      <img src="assets/cop-logo.png" alt="COP Logo" />
+    </div>
+    <nav class="menu">
+      <ul>
+        <!-- Planeación -->
+        <li>
+          <button (click)="toggle('planeacion')" [class.open]="openMenu === 'planeacion'">
+            <span>🤖</span> Planeación
+          </button>
+          <ul *ngIf="openMenu === 'planeacion'">
+            <li><a routerLink="/planeacion/asignacion" routerLinkActive="active">Asignación</a></li>
+            <li><a routerLink="/planeacion/registro-horas" routerLinkActive="active">Registro Horas</a></li>
+            <li><a routerLink="/planeacion/calendario" routerLinkActive="active">Calendario</a></li>
+            <li><a routerLink="/planeacion/encuesta" routerLinkActive="active">Encuesta</a></li>
+          </ul>
+        </li>
+        <!-- Costos y Gastos -->
+        <li>
+          <button (click)="toggle('costos')" [class.open]="openMenu === 'costos'">
+            <span>💲</span> Costos y Gastos
+          </button>
+          <ul *ngIf="openMenu === 'costos'">
+            <li><a routerLink="/costos/procesos" routerLinkActive="active">Gestión financiera</a></li>
+            <li><a routerLink="/costos/historico" routerLinkActive="active">Histórico Facturas</a></li>
+          </ul>
+        </li>
+        <!-- Gestión 360 -->
+        <li>
+          <button (click)="toggle('gestion360')" [class.open]="openMenu === 'gestion360'">
+            <span>🌐</span> Gestión 360
+          </button>
+          <ul *ngIf="openMenu === 'gestion360'">
+            <li><a routerLink="/gestion360/general" routerLinkActive="active">Módulo General</a></li>
+            <li><a routerLink="/gestion360/licencias" routerLinkActive="active">Licencias</a></li>
+          </ul>
+        </li>
+        <!-- Productos y Servicios -->
+        <li>
+          <button (click)="toggle('productos')" [class.open]="openMenu === 'productos'">
+            <span>🧱</span> Productos y Servicios
+          </button>
+          <ul *ngIf="openMenu === 'productos'">
+            <li><a routerLink="/productos/vista" routerLinkActive="active">Vista Productos</a></li>
+            <li><a routerLink="/productos/programa" routerLinkActive="active">Programa</a></li>
+          </ul>
+        </li>
+        <!-- Aprobaciones -->
+        <li>
+          <button (click)="toggle('aprobaciones')" [class.open]="openMenu === 'aprobaciones'">
+            <span>✔️</span> Aprobaciones
+          </button>
+          <ul *ngIf="openMenu === 'aprobaciones'">
+            <li><a routerLink="/aprobaciones/licencias" routerLinkActive="active">Licencias</a></li>
+            <li><a routerLink="/aprobaciones/agendamiento" routerLinkActive="active">Agendamiento</a></li>
+          </ul>
+        </li>
+        <!-- Gestión Usuarios -->
+        <li>
+          <button (click)="toggle('usuarios')" [class.open]="openMenu === 'usuarios'">
+            <span>👥</span> Gestión Usuarios
+          </button>
+          <ul *ngIf="openMenu === 'usuarios'">
+            <li><a routerLink="/usuarios/clientes" routerLinkActive="active">Clientes</a></li>
+            <li><a routerLink="/usuarios/usuarios" routerLinkActive="active">Usuarios</a></li>
+          </ul>
+        </li>
+        <!-- Reportes -->
+        <li>
+          <button (click)="toggle('reportes')" [class.open]="openMenu === 'reportes'">
+            <span>📈</span> Reportes
+          </button>
+          <ul *ngIf="openMenu === 'reportes'">
+            <li><a routerLink="/reportes/asignacion" routerLinkActive="active">Reporte Asignación</a></li>
+            <li><a routerLink="/reportes/usuarios" routerLinkActive="active">Reporte Usuarios</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  <section class="main-panel">
+    <router-outlet></router-outlet>
+  </section>
+</div>

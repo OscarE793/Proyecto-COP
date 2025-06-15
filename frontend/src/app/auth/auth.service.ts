@@ -1,22 +1,24 @@
+// frontend/src/app/auth/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { BehaviorSubject, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = environment.apiUrl; // Usa environment.ts
-  private tokenKey = 'token';
-  private loggedIn = new BehaviorSubject<boolean>(!!this.getToken());
+  private apiUrl = 'http://127.0.0.1:8000'; // <-- CAMBIA esta URL por la tuya
+  private tokenKey = 'cop_token';
 
-  constructor(private http: HttpClient) {}
+  isLoggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap(res => {
-        if (res.token) {
-          localStorage.setItem(this.tokenKey, res.token);
-          this.loggedIn.next(true);
+  constructor(private http: HttpClient, private router: Router) {}
+
+  login(email: string, password: string) {
+    return this.http.post<{ access_token: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap(response => {
+        if (response?.access_token) {
+          localStorage.setItem(this.tokenKey, response.access_token);
+          this.isLoggedIn$.next(true);
         }
       })
     );
@@ -24,23 +26,16 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem(this.tokenKey);
-    this.loggedIn.next(false);
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+    this.isLoggedIn$.next(false);
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  getUser(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/me`);
-  }
-
-  get isLogged$() {
-    return this.loggedIn.asObservable();
+  hasToken(): boolean {
+    return !!localStorage.getItem(this.tokenKey);
   }
 }
 
