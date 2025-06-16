@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // Llama tu seeder de roles aquí
         $this->call(RoleSeeder::class);
+        $this->call(AdminSeeder::class);
 
         // Si quieres, puedes seguir agregando más seeders:
         // $this->call(UserSeeder::class);

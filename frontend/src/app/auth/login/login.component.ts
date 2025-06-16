@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  
 })
 export class LoginComponent {
   email = '';
@@ -27,11 +27,12 @@ export class LoginComponent {
     this.auth.login(this.email, this.password).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/dashboard']);
+        // Si tu ruta raíz '' es el dashboard, navega a '/'
+        this.router.navigate(['/']);
       },
-      error: () => {
+      error: (err) => {
         this.loading = false;
-        this.error = 'El correo o la contraseña es incorrecta';
+        this.error = err?.error?.message || 'El correo o la contraseña es incorrecta';
       }
     });
   }

@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, tap } from 'rxjs';
+import { environment } from '../../environments/environment'; // <--- AÑADE ESTA LÍNEA
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000'; // <-- CAMBIA esta URL por la tuya
+  private apiUrl = environment.apiUrl; // <--- Cambiado aquí
   private tokenKey = 'cop_token';
 
   isLoggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
@@ -14,7 +15,10 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
-    return this.http.post<{ access_token: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
+    return this.http.post<{ access_token: string }>(
+      `${this.apiUrl}/login`, // <--- YA USAS apiUrl CENTRALIZADO
+      { email, password }
+    ).pipe(
       tap(response => {
         if (response?.access_token) {
           localStorage.setItem(this.tokenKey, response.access_token);
@@ -31,11 +35,14 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  return typeof window !== 'undefined'
+    ? localStorage.getItem(this.tokenKey)
+    : null;
   }
 
   hasToken(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
+  return typeof window !== 'undefined'
+    ? !!localStorage.getItem(this.tokenKey)
+    : false;
   }
-}
-
+}  

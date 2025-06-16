@@ -1,14 +1,16 @@
-// frontend/src/app/app.config.ts
-
+// src/app/app.config.ts
 import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { AuthInterceptor } from './core/auth.interceptor';
+import { authInterceptor } from './core/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideRouter(routes),
     provideHttpClient(
-      withInterceptors([AuthInterceptor])
-    )
-    // ...otros providers globales
+      withInterceptors([authInterceptor])
+    ),
+    // ...otros providers que necesites
   ]
 };
